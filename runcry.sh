@@ -60,6 +60,12 @@ else
 #SBATCH -p ${part[@]:0:${#part}-1} -t 30-0:00:00 -o ${job_id}.out
 #SBATCH -N ${nodes} --ntasks-per-node=${cores} --mem=0 
 #SBATCH --exclude=bhx[0112-0129,0131-0136]" > ${job_id}.sbatch
+	elif [[ $part == vermont12 ]]; then
+		echo "#!/bin/bash
+#SBATCH -p ${part[@]:0:${#part}-2} -t 30-0:00:00 -o ${job_id}.out
+#SBATCH -N 2 --ntasks-per-node=${cores} --mem=0 
+#SBATCH --exclude=bhx[0111-0128,0131-0135]" > ${job_id}.sbatch
+
 	elif [[ $part == teraeth ]]; then
 		echo "#!/bin/bash
 #SBATCH -p ${part} -t 30-0:00:00 -o ${job_id}.out
