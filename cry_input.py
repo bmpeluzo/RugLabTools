@@ -1,10 +1,8 @@
-from pymatgen.core import Lattice, Structure
-import numpy as np
-import os
-
-
-
 def build_k(cif_file,max_dens=12):
+    from pymatgen.core import Lattice, Structure
+    import numpy as np
+    import os
+
     k_out=open('k_points.dat','w+')
     cif=Structure.from_file(cif_file)
     rec_lat=cif.lattice.reciprocal_lattice._matrix
@@ -31,3 +29,9 @@ def build_k(cif_file,max_dens=12):
             k_points=np.delete(k_points,i,0)
 
     return k_points
+
+
+
+#import basis_set_exchange as bse
+
+#print(bse.get_basis('STO-3G', elements=[6], fmt='crystal'))
