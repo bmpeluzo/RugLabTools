@@ -31,7 +31,7 @@ def build_k(cif_file,max_dens=12):
     return k_points
 
 
-def get_lat(cif_file)
+def get_lat(cif_file):
     from pymatgen.core import Lattice, Structure
 
     cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
@@ -51,6 +51,6 @@ periodic_table = {
     'Ga': 31, 'Ge': 32, 'As': 33, 'Se': 34, 'Br': 35, 'Kr': 36, 'Rb': 37, 'Sr': 38, 'Y': 39, 'Zr': 40,
     'Nb': 41, 'Mo': 42, 'Tc': 43, 'Ru': 44, 'Rh': 45, 'Pd': 46, 'Ag': 47, 'Cd': 48} ### need to continue
 
-#import basis_set_exchange as bse
+import basis_set_exchange as bse
 
-#print(bse.get_basis('STO-3G', elements=[6], fmt='crystal'))
+print(bse.get_basis('6-311G(d,p)', elements=[6,1,16], fmt='crystal'))
