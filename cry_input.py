@@ -30,6 +30,20 @@ def build_k(cif_file,max_dens=12):
 
     return k_points
 
+
+def get_lat(cif_file):
+    from pymatgen.core import Lattice, Structure
+
+    cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
+    lat_abc=str(cif.lattice.a)+' '+str(cif.lattice.b)+' '+str(cif.lattice.c)+' '
+
+    for ang in cif.lattice.angles:
+        if ang!=90:
+            lat_ang=str(ang)+' '
+
+    return lat_abc+lat_ang
+
+
 periodic_table = {
     'H': 1, 'He': 2, 'Li': 3, 'Be': 4, 'B': 5, 'C': 6, 'N': 7, 'O': 8, 'F': 9, 'Ne': 10,
     'Na': 11, 'Mg': 12, 'Al': 13, 'Si': 14, 'P': 15, 'S': 16, 'Cl': 17, 'Ar': 18, 'K': 19, 'Ca': 20,
@@ -107,6 +121,4 @@ periodic_table = {
     'Ts': 117, # Tennessine
     'Og': 118} # Oganesson    
 
-#import basis_set_exchange as bse
-
-#print(bse.get_basis('STO-3G', elements=[6], fmt='crystal'))
+print(bse.get_basis('6-311G(d,p)', elements=[6,1,16], fmt='crystal'))
