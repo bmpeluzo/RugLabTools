@@ -26,7 +26,9 @@ else
 fi
 
 if [ -z $version ]; then
-	version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL_BARBARA/CRY23/bin/bluehive_impi_nodebug/std/Pcrystal'
+#	version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL_BARBARA/CRY23/bin/bluehive_impi_nodebug/std/Pcrystal'
+	version='Pcrystal'
+	# while I do not have CRY23 on my own version
 else
 	case ${version} in
 	'original') version='Pcrystal';;
@@ -71,7 +73,7 @@ else
 #SBATCH -p ${part} -t 30-0:00:00 -o ${job_id}.out
 #SBATCH -N ${nodes} --ntasks-per-node=${cores} --mem=0 -C Gold6448Y,ib " > ${job_id}.sbatch
 	fi
-	echo "module load /scratch/mruggie8_lab/software/modulefiles/crystal/b2
+	echo "module load /scratch/mruggie8_lab/software/modulefiles/crystal/crystal_23nodebug
 
 job_dir=${job_dir}
 mkdir -p \${job_dir}
