@@ -43,11 +43,24 @@ def get_lat(cif_file):
 
     return lat_abc+lat_ang
 
-#def get_coord(cif_file)
-from pymatgen.core import Structure, Lattice
 
-cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
-print(Lattice.get_fractional_coords(cif))
+def cif_io(cif_file):
+
+    cif_lines=[]    
+    with open(cif_file,'r') as cif:
+        for line in cif:
+            cif_lines.append(line)
+    cif.close()
+
+    return cif_lines
+
+print(cif_io('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'))
+
+#def get_coord(cif_file)
+#from pymatgen.core import Structure, Lattice
+
+#cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
+#print(Lattice.get_fractional_coords(cif))
 #print(cif.frac_coords.CellType)
 
 periodic_table = {
@@ -126,5 +139,8 @@ periodic_table = {
     'Lv': 116, # Livermorium
     'Ts': 117, # Tennessine
     'Og': 118} # Oganesson    
+
+
+
 
 #print(bse.get_basis('6-311G(d,p)', elements=[6,1,16], fmt='crystal'))
