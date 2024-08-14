@@ -54,12 +54,47 @@ def cif_io(cif_file):
 
     return cif_lines
 
-print(cif_io('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'))
+cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/ROCKOK.search2.cif'
+
+def get_coord(cif_file):
+    cif=cif_io(cif_file)
+    for line in range(len(cif)):
+        x=cif[line].find('_atom_site_fract_x')  ##  find where the loop with fractional coordinates is
+        if x!=-1: ## check for y
+            y=cif[line+1].find('_atom_site_fract_y')
+            if y!=-1: ## check for z
+                z=cif[line+2].find('_atom_site_fract_z')
+                if z!=-1: # keep scanning on file to start the coordinates
+                    for line2 in range(line+3,len(cif)):  #### search for the coordinates
+                        init=cif[line2].find('_')
+                        if init==-1:
+                            line_init=line2
+                            for line3 in range(line2,len(cif)): ### search for a blank line or 'loop_' to mark the end of coordinates sections
+                                if len(cif[line3])==1: ## we reached the end of coordinates                           
+                                    line_end=line3-1
+                                    break
+                                else: ## alternative: #END
+                                    end=cif[line3].find('END')
+                                    if end!=-1:
+                                        line_end=line3-1
+                                        break
+                            break
+                    break
+                else: ### warning: z not found
+                    print('Warning! CIF file appears to do not have y coordinates')            
+            else: ### warning: y not found
+                print('Warning! CIF file appears to do not have y coordinates')
+            
+    return cif[line_init:line_end]
+
+from pymatgen.core import Structure
 
 #def get_coord(cif_file)
 #from pymatgen.core import Structure, Lattice
 
 #cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
+#print(dir(cif))
+#print(cif.get_reduced_structure)
 #print(Lattice.get_fractional_coords(cif))
 #print(cif.frac_coords.CellType)
 
