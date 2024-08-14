@@ -57,7 +57,11 @@ def cif_io(cif_file):
 cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/ROCKOK.search2.cif'
 
 def get_coord(cif_file):
+
+    import pandas as pd
+    
     cif=cif_io(cif_file)
+    
     for line in range(len(cif)):
         x=cif[line].find('_atom_site_fract_x')  ##  find where the loop with fractional coordinates is
         if x!=-1: ## check for y
@@ -84,9 +88,15 @@ def get_coord(cif_file):
                     print('Warning! CIF file appears to do not have y coordinates')            
             else: ### warning: y not found
                 print('Warning! CIF file appears to do not have y coordinates')
-            
+
+    for i in range(len(cif[line_init:line_end])):
+        cif[i]=cif[i].split()
+
+    coord_df=pd.DataFrame(cif[line_init:line_end])
+    print(coord_df)
     return cif[line_init:line_end]
 
+get_coord(cif_file)
 from pymatgen.core import Structure
 
 #def get_coord(cif_file)
