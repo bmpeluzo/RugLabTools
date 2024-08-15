@@ -54,11 +54,12 @@ def cif_io(cif_file):
 
     return cif_lines
 
-cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/ROCKOK.search2.cif'
+cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'
 
 def get_coord(cif_file):
 
     import pandas as pd
+    from uncertainties import ufloat_fromstr
     
     cif=cif_io(cif_file)
     
@@ -75,12 +76,12 @@ def get_coord(cif_file):
                             line_init=line2
                             for line3 in range(line2,len(cif)): ### search for a blank line or 'loop_' to mark the end of coordinates sections
                                 if len(cif[line3])==1: ## we reached the end of coordinates                           
-                                    line_end=line3-1
+                                    line_end=line3
                                     break
                                 else: ## alternative: #END
                                     end=cif[line3].find('END')
                                     if end!=-1:
-                                        line_end=line3-1
+                                        line_end=line3
                                         break
                             break
                     break
@@ -89,11 +90,16 @@ def get_coord(cif_file):
             else: ### warning: y not found
                 print('Warning! CIF file appears to do not have y coordinates')
 
-    for i in range(len(cif[line_init:line_end])):
-        cif[i]=cif[i].split()
+    coord=cif[line_init:line_end]
 
-    coord_df=pd.DataFrame(cif[line_init:line_end])
-    print(coord_df)
+    for i in range(len(coord)):
+        coord[i]=coord[i].split()
+
+    coord_df=pd.DataFrame(coord)
+    print(ufloat_fromstr(coord_df.iloc[0,3]))
+    x=ufloat(2,0.1)
+    print(type(x))
+    #print(cif)
     return cif[line_init:line_end]
 
 get_coord(cif_file)
