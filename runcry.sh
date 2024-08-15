@@ -19,10 +19,19 @@ if [ -z $nodes ]; then
 	nodes=1
 fi
 
-if [ -z $proj ]; then
-	job_dir='${SCRATCH}/${SLURM_JOB_ID}'
+if [[ $part == vermont1 || $part == vermont2 || $part == vermont12 ]]; then
+	job_dir='/local_scratch/${SLURM_JOB_ID}'
+	if [ -z $proj ]; then
+		storg_dir='${SCRATCH}/${SLURM_JOB_ID}'
+	else
+		storg_dir='${SCRATCH}/'${proj}'/${SLURM_JOB_ID}'
+	fi
 else
+	if [ -z $proj ]; then
+	job_dir='${SCRATCH}/${SLURM_JOB_ID}'
+	else
 	job_dir='${SCRATCH}/'${proj}'/${SLURM_JOB_ID}'
+	fi
 fi
 
 if [ -z $version ]; then
@@ -463,4 +472,9 @@ fi
 # ---------------------------------------------------- " >> ${job_id}.sbatch
 
 fi
+
+if [[ $part == vermont1 || $part == vermont2 || $part == vermont12 ]]; then
+	echo "cp -r * $storg_dir" >> ${job_id}.sbatch
+fi
+
 sbatch ${job_id}.sbatch
