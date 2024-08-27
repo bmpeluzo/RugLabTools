@@ -60,12 +60,12 @@ else
 		echo "#!/bin/bash
 #SBATCH -p ${part[@]:0:${#part}-1} -t 30-0:00:00 -o ${job_id}.out
 #SBATCH -N ${nodes} --ntasks-per-node=${cores} --mem=0 
-#SBATCH --exclude=bhx[0111,0117,0120,0123,0131-0136]" > ${job_id}.sbatch
+#SBATCH --exclude=bhx[0131-0136]" > ${job_id}.sbatch
 	elif [[ $part == vermont2 ]]; then
 		echo "#!/bin/bash
 #SBATCH -p ${part[@]:0:${#part}-1} -t 30-0:00:00 -o ${job_id}.out
 #SBATCH -N ${nodes} --ntasks-per-node=${cores} --mem=0 
-#SBATCH --exclude=bhx[0111-0129,0131]" > ${job_id}.sbatch
+#SBATCH --exclude=bhx[0111-0129]" > ${job_id}.sbatch
 	elif [[ $part == vermont0 ]]; then
 		echo "#!/bin/bash
 #SBATCH -p ${part[@]:0:${#part}-1} -t 30-0:00:00 -o ${job_id}.out
