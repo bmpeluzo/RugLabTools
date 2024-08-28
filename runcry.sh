@@ -475,6 +475,7 @@ fi
 cd \${SLURM_SUBMIT_DIR}/
 
 cp ${job_id}.out ${job_id}_${SLURM_JOB_ID}.out ##### make a copy or the output to avoid overwriting
+cp ${job_id}.out \${job_dir}/${job_id}_${SLURM_JOB_ID}.out
 
 " >> ${job_id}.sbatch
 
