@@ -219,6 +219,7 @@ export I_MPI_PMI_LIBRARY=/software/slurm/current/lib/libpmi.so
 
 srun ${version}
 
+
 ################## copying output files ########################
 
 if [ -e KAPPA.DAT ]
@@ -469,7 +470,13 @@ if [ -e HESSFREQ.DAT ]
 then
    cp HESSFREQ.DAT \${SLURM_SUBMIT_DIR}/${job_id}.hessfreq
 fi
-# ---------------------------------------------------- " >> ${job_id}.sbatch
+# ---------------------------------------------------- 
+
+cd \${SLURM_SUBMIT_DIR}/
+
+cp ${job_id}.out ${job_id}_${SLURM_JOB_ID}.out ##### make a copy or the output to avoid overwriting
+
+" >> ${job_id}.sbatch
 
 fi
 
