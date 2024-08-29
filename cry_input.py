@@ -54,66 +54,6 @@ def cif_io(cif_file):
 
     return cif_lines
 
-cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'
-
-def get_coord(cif_file):
-
-    import pandas as pd
-    from uncertainties import ufloat_fromstr
-    
-    cif=cif_io(cif_file)
-    
-    for line in range(len(cif)):
-        x=cif[line].find('_atom_site_fract_x')  ##  find where the loop with fractional coordinates is
-        if x!=-1: ## check for y
-            y=cif[line+1].find('_atom_site_fract_y')
-            if y!=-1: ## check for z
-                z=cif[line+2].find('_atom_site_fract_z')
-                if z!=-1: # keep scanning on file to start the coordinates
-                    for line2 in range(line+3,len(cif)):  #### search for the coordinates
-                        init=cif[line2].find('_')
-                        if init==-1:
-                            line_init=line2
-                            for line3 in range(line2,len(cif)): ### search for a blank line or 'loop_' to mark the end of coordinates sections
-                                if len(cif[line3])==1: ## we reached the end of coordinates                           
-                                    line_end=line3
-                                    break
-                                else: ## alternative: #END
-                                    end=cif[line3].find('END')
-                                    if end!=-1:
-                                        line_end=line3
-                                        break
-                            break
-                    break
-                else: ### warning: z not found
-                    print('Warning! CIF file appears to do not have y coordinates')            
-            else: ### warning: y not found
-                print('Warning! CIF file appears to do not have y coordinates')
-
-    coord=cif[line_init:line_end]
-
-    for i in range(len(coord)):
-        coord[i]=coord[i].split()
-
-    coord_df=pd.DataFrame(coord)
-    print(ufloat_fromstr(coord_df.iloc[0,3]))
-    x=ufloat(2,0.1)
-    print(type(x))
-    #print(cif)
-    return cif[line_init:line_end]
-
-get_coord(cif_file)
-from pymatgen.core import Structure
-
-#def get_coord(cif_file)
-#from pymatgen.core import Structure, Lattice
-
-#cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
-#print(dir(cif))
-#print(cif.get_reduced_structure)
-#print(Lattice.get_fractional_coords(cif))
-#print(cif.frac_coords.CellType)
-
 periodic_table = {
     'H': 1, 'He': 2, 'Li': 3, 'Be': 4, 'B': 5, 'C': 6, 'N': 7, 'O': 8, 'F': 9, 'Ne': 10,
     'Na': 11, 'Mg': 12, 'Al': 13, 'Si': 14, 'P': 15, 'S': 16, 'Cl': 17, 'Ar': 18, 'K': 19, 'Ca': 20,
@@ -189,7 +129,73 @@ periodic_table = {
     'Mc': 115, # Moscovium
     'Lv': 116, # Livermorium
     'Ts': 117, # Tennessine
-    'Og': 118} # Oganesson    
+    'Og': 118} # Oganesson
+
+cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'
+
+def get_coord(cif_file):
+
+    import pandas as pd
+    from uncertainties import ufloat_fromstr
+    
+    cif=cif_io(cif_file)
+    
+    for line in range(len(cif)):
+        x=cif[line].find('_atom_site_fract_x')  ##  find where the loop with fractional coordinates is
+        if x!=-1: ## check for y
+            y=cif[line+1].find('_atom_site_fract_y')
+            if y!=-1: ## check for z
+                z=cif[line+2].find('_atom_site_fract_z')
+                if z!=-1: # keep scanning on file to start the coordinates
+                    for line2 in range(line+3,len(cif)):  #### search for the coordinates
+                        init=cif[line2].find('_')
+                        if init==-1:
+                            line_init=line2
+                            for line3 in range(line2,len(cif)): ### search for a blank line or 'loop_' to mark the end of coordinates sections
+                                if len(cif[line3])==1: ## we reached the end of coordinates                           
+                                    line_end=line3
+                                    break
+                                else: ## alternative: #END
+                                    end=cif[line3].find('END')
+                                    if end!=-1:
+                                        line_end=line3
+                                        break
+                            break
+                    break
+                else: ### warning: z not found
+                    print('Warning! CIF file appears to do not have y coordinates')            
+            else: ### warning: y not found
+                print('Warning! CIF file appears to do not have y coordinates')
+
+    coord=cif[line_init:line_end]
+
+    for i in range(len(coord)):  ### building the dataframe
+        coord[i]=coord[i].split()
+
+    coord_df=pd.DataFrame(coord)
+    coord_df.drop(labels=[0,5,6,7,8,9,10,11,12,13,14],axis=1,inplace=True) # remove extra columns
+    coord_df.replace(to_replace=periodic_table,inplace=True) # replace atomic symbols w/ atomic numbers
+    for i in range(coord_df.shape[0]):
+        coord_df.iloc[i,1]=ufloat_fromstr(coord_df.iloc[i,1]).n
+        coord_df.iloc[i,2]=ufloat_fromstr(coord_df.iloc[i,2]).n
+        coord_df.iloc[i,3]=ufloat_fromstr(coord_df.iloc[i,3]).n
+
+
+    return coord_df
+
+print(get_coord(cif_file))
+from pymatgen.core import Structure
+
+#def get_coord(cif_file)
+#from pymatgen.core import Structure, Lattice
+
+#cif=Structure.from_file('/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif')
+#print(dir(cif))
+#print(cif.get_reduced_structure)
+#print(Lattice.get_fractional_coords(cif))
+#print(cif.frac_coords.CellType)
+
+
 
 
 
