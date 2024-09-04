@@ -1,50 +1,54 @@
 import sys
 from pymatgen.core import Structure
 import numpy as np
+from uncertainties import ufloat_fromstr
 
-usage="\nUsage: python "+sys.argv[0]+" exp_cif.cif theo_cif.cif\nError is given in %, and it is calculated via:\n err=(theo-exp)/exp * 100"
+usage="\nUsage: python "+sys.argv[0]+" exp_cif.cif opt_output.out\nError is given in %, and it is calculated via:\n err=(theo-exp)/exp * 100"
 
 
 #if len(sys.argv)!=3:
 #    sys.exit(usage)
 
+
+######## file i/o ##########
+def file_io(file):
+    file_name=open(file,'r') ##sys.argv[1],'r')
+    file_lines=[]
+
+    for i in file_name:
+        file_lines.append(i)
+    file_name.close()
+
+    return file_lines
+
+
 ### getting experimental parameters
-exp_cif=sys.argv[1]
-exp_struc=Structure.from_file(exp_cif)
 
-a_exp=exp_struc.lattice.a
-b_exp=exp_struc.lattice.b
-c_exp=exp_struc.lattice.c
+for i in range(len(file_io(sys.argv[1]))):
+    line_a=file_io(sys.argv[1])[i].find("_cell_length_a")
+    if line_a!=-1:
+        a_exp=file_io(sys.argv[1])[i].split()[len(file_io(sys.argv[1])[i].split())-1]
+        a_exp=ufloat_fromstr(a_exp).n
+        b_exp=file_io(sys.argv[1])[i+1].split()[len(file_io(sys.argv[1])[i].split())-1]
+        b_exp=ufloat_fromstr(b_exp).n
+        c_exp=file_io(sys.argv[1])[i+2].split()[len(file_io(sys.argv[1])[i].split())-1]
+        c_exp=ufloat_fromstr(c_exp).n
+        alpha_exp=file_io(sys.argv[1])[i+3].split()[len(file_io(sys.argv[1])[i].split())-1]
+        alpha_exp=int(alpha_exp)
+        beta_exp=file_io(sys.argv[1])[i+4].split()[len(file_io(sys.argv[1])[i].split())-1]
+        beta_exp=int(beta_exp)
+        gamma_exp=file_io(sys.argv[1])[i+5].split()[len(file_io(sys.argv[1])[i].split())-1]
+        gamma_exp=int(gamma_exp)
+        break
 
-alpha_exp=exp_struc.lattice.alpha
-beta_exp=exp_struc.lattice.beta
-gamma_exp=exp_struc.lattice.gamma
+######### getting the experimental ##############
 
-print(a_exp,b_exp,c_exp,alpha_exp,beta_exp,gamma_exp)
-
-### getting theoretical parameters
-"""
-theo_cif=sys.argv[2]
-theo_struc=Structure.from_file(theo_cif)
-
-a_theo=theo_struc.lattice.a
-b_theo=theo_struc.lattice.b
-c_theo=theo_struc.lattice.c
-
-alpha_theo=theo_struc.lattice.alpha
-beta_theo=theo_struc.lattice.beta
-gamma_theo=theo_struc.lattice.gamma
-
-def calc_err(exp,theo):
-    err=((theo-exp)/exp)*100
-
-    return err
-
-### errors::
-#err=np.zeros(6)
-err=np.array([calc_err(a_exp,a_theo),calc_err(b_exp,b_theo),calc_err(c_exp,c_theo),calc_err(alpha_exp,alpha_theo),calc_err(beta_exp,beta_theo),calc_err(gamma_exp,gamma_theo)])
-print(err)
-
-#if ele >=1 np.any>=1:
-#    print("Warning
-"""
+for i in range(len(file_io(sys.argv[2]))):
+    opt_geom=file_io(sys.argv[2])[i].find("FINAL OPTIMIZED GEOMETRY")
+    if opt_geom!=-1:
+        print(file_io(sys.argv[2])[i])
+        for j in range(i,len(file_io(sys.argv[2]))):
+            cell=file_io(sys.argv[2])[j].find("CRYSTALLOGRAPHIC CELL")
+            print(file_io(sys.argv[2])[j])
+            if cell!=-1:
+                print(file_io(sys.argv[2])[j+2])
