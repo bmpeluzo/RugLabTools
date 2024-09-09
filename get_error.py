@@ -35,11 +35,11 @@ for i in range(len(cif)):
         c_exp=cif[i+2].split()[len(cif[i].split())-1]
         c_exp=ufloat_fromstr(c_exp).n
         alpha_exp=cif[i+3].split()[len(cif[i].split())-1]
-        alpha_exp=float(alpha_exp)
+        alpha_exp=ufloat_fromstr(alpha_exp).n
         beta_exp=cif[i+4].split()[len(cif[i].split())-1]
-        beta_exp=float(beta_exp)
+        beta_exp=ufloat_fromstr(beta_exp).n
         gamma_exp=cif[i+5].split()[len(cif[i].split())-1]
-        gamma_exp=float(gamma_exp)
+        gamma_exp=ufloat_fromstr(gamma_exp).n
         break
 
 
