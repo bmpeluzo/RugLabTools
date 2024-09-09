@@ -84,4 +84,4 @@ def get_err(theo,exp):
     return err
 
 print("Erros:\n err = (theo-exp)/exp * 100")
-print(get_err(a_theo,a_exp),get_err(b_theo,b_exp),get_err(c_theo,c_exp),get_err(alpha_theo,alpha_exp),get_err(beta_theo,beta_exp),get_err(gamma_theo,gamma_exp))
+print('%.3f,%.3f,%.3f,%.3f,%.3f,%.3f'%(get_err(a_theo,a_exp),get_err(b_theo,b_exp),get_err(c_theo,c_exp),get_err(alpha_theo,alpha_exp),get_err(beta_theo,beta_exp),get_err(gamma_theo,gamma_exp)))
