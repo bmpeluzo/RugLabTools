@@ -175,7 +175,8 @@ def get_coord(cif_file):
         coord[i]=coord[i].split()
 
     coord_df=pd.DataFrame(coord)
-    coord_df.drop(labels=[0,5,6,7,8,9,10,11,12,13,14],axis=1,inplace=True) # remove extra columns
+    coord_df=coord_df.iloc[:,1:5]
+    #coord_df.drop(labels=[0,5,6,7,8,9,10,11,12,13,14],axis=1,inplace=True) # remove extra columns
     coord_df.replace(to_replace=periodic_table,inplace=True) # replace atomic symbols w/ atomic numbers
     for i in range(coord_df.shape[0]):
         coord_df.iloc[i,1]=ufloat_fromstr(coord_df.iloc[i,1]).n
