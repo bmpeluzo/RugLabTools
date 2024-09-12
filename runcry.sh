@@ -41,7 +41,7 @@ if [ -z $version ]; then
 else
 	case ${version} in
 	'original') version='Pcrystal';;
-	'barbara') version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL_BARBARA/CRY23/bin/bluehive_impi_nodebug/std/Pcrystal'
+	'barbara') version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL23_BARBARA/bin/bluehive_impi_nodebug/std/Pcrystal'
 	esac
 fi
 
