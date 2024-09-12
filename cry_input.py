@@ -131,8 +131,6 @@ periodic_table = {
     'Ts': 117, # Tennessine
     'Og': 118} # Oganesson
 
-cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/BTBT.cif'
-
 def get_coord(cif_file):
 
     import pandas as pd
@@ -160,6 +158,10 @@ def get_coord(cif_file):
                                     if end!=-1:
                                         line_end=line3
                                         break
+                                    end2=cif[line3].find('loop_') ### search for a _loop to mark the end of coordinates
+                                    if end2!=-1:
+                                        line_end=line3
+                                        break
                             break
                     break
                 else: ### warning: z not found
@@ -173,7 +175,8 @@ def get_coord(cif_file):
         coord[i]=coord[i].split()
 
     coord_df=pd.DataFrame(coord)
-    coord_df.drop(labels=[0,5,6,7,8,9,10,11,12,13,14],axis=1,inplace=True) # remove extra columns
+    coord_df=coord_df.iloc[:,1:5]
+    #coord_df.drop(labels=[0,5,6,7,8,9,10,11,12,13,14],axis=1,inplace=True) # remove extra columns
     coord_df.replace(to_replace=periodic_table,inplace=True) # replace atomic symbols w/ atomic numbers
     for i in range(coord_df.shape[0]):
         coord_df.iloc[i,1]=ufloat_fromstr(coord_df.iloc[i,1]).n
@@ -182,6 +185,8 @@ def get_coord(cif_file):
 
 
     return coord_df
+
+cif_file='/home/bmpeluzo/Dropbox/Rochester/Research/CIF/U_VI_hexakis_tert_butoxide.cif'
 
 print(get_coord(cif_file))
 from pymatgen.core import Structure
