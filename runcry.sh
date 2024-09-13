@@ -35,8 +35,8 @@ else
 fi
 
 if [ -z $version ]; then
-#	version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL_BARBARA/CRY23/bin/bluehive_impi_nodebug/std/Pcrystal'
-	version='Pcrystal'
+	version='/scratch/mruggie8_lab/software/CRYSTAL/CRYSTAL23_BARBARA/bin/bluehive_impi_nodebug/std/Pcrystal'
+	#version='Pcrystal'
 	# while I do not have CRY23 on my own version
 else
 	case ${version} in
