@@ -34,7 +34,7 @@ fi
 printf -v joined '%s,' "$@"
 hostlist=$(echo $joined | sed 's/,$//')
 
-echo "Running in $jobdir on $hostlist"
+echo "Running $job_name in $jobdir on $hostlist"
 
 # Loop over hosts and copy current directory to jobdir (and binary)
 for host in $@; do
