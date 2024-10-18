@@ -44,10 +44,13 @@ for host in $@; do
 # scp additional_input $host:$jobdir   #### comment this out if you have additional input files
 done
 
+# Write INPUT to the output
+
+cat INPUT </dev/null &> $job_name.out
 
 #
 # Launch program on remote hosts
-mpirun -ppn 24 -hosts $hostlist -wdir=$jobdir $remotebinary </dev/null &> $job_name.out
+mpirun -ppn 24 -hosts $hostlist -wdir=$jobdir $remotebinary </dev/null &>> $job_name.out
 
 ### extra copy of the output with jobid
 
