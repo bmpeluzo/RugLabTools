@@ -60,12 +60,12 @@ cp ${job_name}.out ${job_name}_$rand.out
 
 if [[ $sub_dir == "home" ]]; then
 	out_dir=$SCRATCH/${job_name}_$rand
-	echo "copying output to scratch"
+	echo "copying output to scratch. Job ${job_name}_$rand on $hostlist done"
 elif [[ $sub_dir == "scratch" ]]; then
 	out_dir=${PWD}/${job_name}_$rand
 else
 	out_dir=$SCRATCH/${job_name}_$rand
-	echo "Unable to detect submission directory. Output files are located at $out_dir"
+	echo "Unable to detect submission directory. Output files are located at $out_dir. Job ${job_name}_$rand on $hostlist done"
 fi
 
 mkdir -p ${out_dir}
